@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  my-project:
+    container_name: my-project
+    build:
+      context: .
+      dockerfile: docker_resources/build/Dockerfile
+    command: [sh, -c, "npm install && ng serve --host 0.0.0.0 --disableHostCheck"]
+    volumes:
+      - '.:/app'
+    ports:
+      - '4201:4200'
+      - '9876:9876'
+
+  selenium-hub:
+    image: selenium/hub
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+    depends_on:
+      - my-project
+    environment:
+      - GRID_THROW_ON_CAPABILITY_NOT_PRESENT=true
+
+  chrome:
+    image: selenium/node-chrome-debug
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    ports:
+      - 5900:5900
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
+
+  firefox:
+    image: selenium/node-firefox-debug
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    ports:
+      - 5901:5900
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
