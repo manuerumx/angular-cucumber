@@ -34,7 +34,7 @@
     "@types/jasmine": "~3.3.8",
     "@types/node": "~8.9.4",
     "chai": "^4.2.0",
-    "codelyzer": "^5.0.0",
+    "codelyzer": "^6.0.1",
     "cucumber": "^5.1.0",
     "cucumber-pretty": "^1.5.2",
     "jasmine-core": "~3.4.0",
